@@ -1,0 +1,32 @@
+# 市场价格快报配置文件
+run_date: "auto"                 # "auto"=今天，或指定 yyyy-mm-dd
+scope: "全国批发市场"
+price_type: "wholesale"          # wholesale/retail/cif/...
+unit: "元/公斤"
+
+commodities:                     # 今日要发布的品类
+  - 猪肉
+  - 大米
+  - 黑胡椒
+
+references: ["D-1", "W-1", "M-1"]  # 同环比口径
+
+style:
+  language: "zh-CN"
+  tone: "business_concise"
+  max_chars: 140
+  numeral_format: "0.00"
+  percent_format: "0.0%"
+  include_source: true
+  include_hint: "auto"          # auto/always/never
+
+rules:
+  flat_threshold_pct: 0.3        # |δ|<0.3% 视为"持平/基本稳定"
+  hint_trigger_pct: 1.0          # |δ|≥1% 才考虑附带提示
+  anomaly_pct: 8.0               # |δ|≥8% 需要人工审核
+  use_weekly_as_daily: true      # 无日频，用最新周频承载并标注口径
+
+publisher:
+  mode: "stdout"                 # stdout/file/wecom
+  file_path: "out/bulletin_{{date}}.txt"
+  wecom_webhook: ""              # 企业微信机器人webhook（可留空）
